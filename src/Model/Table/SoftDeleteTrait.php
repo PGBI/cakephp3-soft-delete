@@ -22,7 +22,7 @@ trait SoftDeleteTrait {
             $options['conditions'] = [];
         }
 
-        $options['conditions'] = array_merge($options['conditions'], ['deleted IS NULL']);
+        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.deleted IS NULL']);
 
         return parent::find($type, $options);
     }
@@ -69,7 +69,7 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set(['deleted' => date('Y-m-d H:i:s')])
+            ->set([$this->alias() . '.deleted' => date('Y-m-d H:i:s')])
             ->where($conditions)
             ->execute();
 
@@ -94,7 +94,7 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->update()
-            ->set(['deleted' => date('Y-m-d H:i:s')])
+            ->set([$this->alias() . '.deleted' => date('Y-m-d H:i:s')])
             ->where($conditions);
         $statement = $query->execute();
         $statement->closeCursor();
@@ -110,7 +110,10 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->delete()
-            ->where(['deleted IS NOT NULL', 'deleted <=' => $until->format('Y-m-d H:i:s')]);
+            ->where([
+                $this->alias() . '.deleted IS NOT NULL',
+                $this->alias() . '.deleted <=' => $until->format('Y-m-d H:i:s')
+            ]);
         $statement = $query->execute();
         $statement->closeCursor();
         return $statement->rowCount();
