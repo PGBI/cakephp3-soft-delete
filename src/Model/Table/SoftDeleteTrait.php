@@ -69,7 +69,7 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set([$this->alias() . '.deleted' => date('Y-m-d H:i:s')])
+            ->set(['deleted' => date('Y-m-d H:i:s')])
             ->where($conditions)
             ->execute();
 
@@ -94,7 +94,7 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->update()
-            ->set([$this->alias() . '.deleted' => date('Y-m-d H:i:s')])
+            ->set(['deleted' => date('Y-m-d H:i:s')])
             ->where($conditions);
         $statement = $query->execute();
         $statement->closeCursor();
@@ -111,8 +111,8 @@ trait SoftDeleteTrait {
         $query = $this->query()
             ->delete()
             ->where([
-                $this->alias() . '.deleted IS NOT NULL',
-                $this->alias() . '.deleted <=' => $until->format('Y-m-d H:i:s')
+                'deleted IS NOT NULL',
+                'deleted <=' => $until->format('Y-m-d H:i:s')
             ]);
         $statement = $query->execute();
         $statement->closeCursor();

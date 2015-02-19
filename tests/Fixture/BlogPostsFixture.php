@@ -7,7 +7,7 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 use SoftDelete\Model\Table\SoftDeleteTrait;
 
-class PostsTable extends Table
+class BlogPostsTable extends Table
 {
     use SoftDeleteTrait;
 
@@ -19,7 +19,7 @@ class PostsTable extends Table
 }
 
 
-class PostsFixture extends TestFixture {
+class BlogPostsFixture extends TestFixture {
 
     public $fields = [
         'id'          => ['type' => 'integer'],
