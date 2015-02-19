@@ -18,7 +18,7 @@ class SoftDeleteBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.SoftDelete.users',
-        'plugin.SoftDelete.posts'
+        'plugin.SoftDelete.blog_posts'
         ];
 
     /**
@@ -31,7 +31,7 @@ class SoftDeleteBehaviorTest extends TestCase
         parent::setUp();
 
         $this->usersTable = TableRegistry::get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
-        $this->postsTable = TableRegistry::get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
+        $this->postsTable = TableRegistry::get('BlogPosts', ['className' => 'SoftDelete\Test\Fixture\BlogPostsTable']);
     }
 
     /**
@@ -81,6 +81,11 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->usersTable->deleteAll([]);
         $this->assertEquals(0, $this->usersTable->find()->count());
         $this->assertNotEquals(0, $this->usersTable->find('all', ['withDeleted'])->count());
+
+        $this->postsTable->deleteAll([]);
+        $this->assertEquals(0, $this->postsTable->find()->count());
+        $this->assertNotEquals(0, $this->postsTable->find('all', ['withDeleted'])->count());
+
     }
 
     /**
@@ -132,16 +137,16 @@ class SoftDeleteBehaviorTest extends TestCase
      */
     public function testHardDeleteAll()
     {
-        $affectedRows = $this->usersTable->hardDeleteAll(new \DateTime('now'));
+        $affectedRows = $this->postsTable->hardDeleteAll(new \DateTime('now'));
         $this->assertEquals(0, $affectedRows);
 
-        $usersRowsCount = $this->usersTable->find('all', ['withDeleted'])->count();
+        $postsRowsCount = $this->postsTable->find('all', ['withDeleted'])->count();
 
-        $this->usersTable->delete($this->usersTable->get(1));
-        $affectedRows = $this->usersTable->hardDeleteAll(new \DateTime('now'));
+        $this->postsTable->delete($this->postsTable->get(1));
+        $affectedRows = $this->postsTable->hardDeleteAll(new \DateTime('now'));
         $this->assertEquals(1, $affectedRows);
 
-        $newUsersRowsCount = $this->usersTable->find('all', ['withDeleted'])->count();
-        $this->assertEquals($usersRowsCount - 1, $newUsersRowsCount);
+        $newpostsRowsCount = $this->postsTable->find('all', ['withDeleted'])->count();
+        $this->assertEquals($postsRowsCount - 1, $newpostsRowsCount);
     }
 }
