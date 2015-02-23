@@ -1,5 +1,7 @@
 # CakeSoftDelete plugin for CakePHP
 
+[![Build status](https://api.travis-ci.org/PGBI/cakephp3-soft-delete.png?branch=master)](https://travis-ci.org/PGBI/cakephp3-soft-delete)
+
 ## Purpose
 
 This Cakephp plugin enables you to make your models soft deletable.
