@@ -64,7 +64,10 @@ trait SoftDeleteTrait {
             return $event->result;
         }
 
-        $this->_associations->cascadeDelete($entity, $options->getArrayCopy());
+        $this->_associations->cascadeDelete(
+            $entity,
+            ['_primary' => false] + $options->getArrayCopy()
+        );
 
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
