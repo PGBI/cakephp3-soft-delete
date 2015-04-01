@@ -2,6 +2,7 @@
 namespace SoftDelete\Model\Table;
 
 use Cake\ORM\RulesChecker;
+use Cake\Datasource\EntityInterface;
 
 trait SoftDeleteTrait {
 
@@ -91,7 +92,7 @@ trait SoftDeleteTrait {
 
     /**
      * Soft deletes all records matching `$conditions`.
-     * @return in number of affected rows.
+     * @return int number of affected rows.
      */
     public function deleteAll($conditions)
     {
@@ -102,6 +103,30 @@ trait SoftDeleteTrait {
         $statement = $query->execute();
         $statement->closeCursor();
         return $statement->rowCount();
+    }
+
+    /**
+     * Hard deletes the given $entity.
+     * @return bool true in case of success, false otherwise.
+     */
+    public function hardDelete(EntityInterface $entity)
+    {
+        if(!$this->delete($entity)) {
+            return false;
+        }
+        $primaryKey = (array)$this->primaryKey();
+        $query = $this->query();
+        $conditions = (array)$entity->extract($primaryKey);
+        $statement = $query->delete()
+            ->where($conditions)
+            ->execute();
+
+        $success = $statement->rowCount() > 0;
+        if (!$success) {
+            return $success;
+        }
+
+        return $success;
     }
 
     /**

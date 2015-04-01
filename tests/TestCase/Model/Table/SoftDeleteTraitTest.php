@@ -132,6 +132,17 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->assertEquals(1, $user->posts_count);
     }
 
+    public function testHardDelete()
+    {
+        $user = $this->usersTable->get(1);
+        $this->usersTable->hardDelete($user);
+        $user = $this->usersTable->findById(1)->first();
+        $this->assertEquals(null, $user);
+
+        $user = $this->usersTable->find('all', ['withDeleted'])->where(['id' => 1])->first();
+        $this->assertEquals(null, $user);
+    }
+
     /**
      * Tests hardDeleteAll.
      */
