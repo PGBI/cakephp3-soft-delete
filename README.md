@@ -63,7 +63,14 @@ $allRecords            = $this->find('all', ['withDeleted']);
 
 ### Hard deleting records
 
-Only soft deleted records can be hard deleted. To delete all records that were soft deleted before a given date:
+To hard delete a single entity:
+```
+// in src/Model/Table/UsersTable.php
+$user = $this->get($userId);
+$success = $this->hardDelete($user);
+```
+
+To mass hard delete records that were soft deleted before a given date, you can use hardDeleteAll($date):
 
 ```
 // in src/Model/Table/UsersTable.php
