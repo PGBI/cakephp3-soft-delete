@@ -5,13 +5,20 @@ use Cake\ORM\RulesChecker;
 use Cake\Datasource\EntityInterface;
 
 trait SoftDeleteTrait {
-    
+
     /**
-     * The name of the deleted field in the database.
-     * 
-     * @param string $softDeleteField The database column name for storing the deleted datetime.
+     * Get the configured deletion field
+     *
+     * @return string
      */
-    public $softDeleteField = 'deleted';
+    protected function getField()
+    {
+        if (isset($this->softDeleteField)) {
+            return $this->softDeleteField;
+        }
+
+        return 'deleted';
+    }
 
     /**
      * Add the conditions `deleted IS NULL` to every find request in order not to return
@@ -30,7 +37,7 @@ trait SoftDeleteTrait {
             $options['conditions'] = [];
         }
 
-        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->softDeleteField . ' IS NULL']);
+        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->getField() . ' IS NULL']);
 
         return parent::find($type, $options);
     }
@@ -80,7 +87,7 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set([$this->softDeleteField => date('Y-m-d H:i:s')])
+            ->set([$this->getField() => date('Y-m-d H:i:s')])
             ->where($conditions)
             ->execute();
 
@@ -105,7 +112,7 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->update()
-            ->set([$this->softDeleteField => date('Y-m-d H:i:s')])
+            ->set([$this->getField() => date('Y-m-d H:i:s')])
             ->where($conditions);
         $statement = $query->execute();
         $statement->closeCursor();
@@ -146,8 +153,8 @@ trait SoftDeleteTrait {
         $query = $this->query()
             ->delete()
             ->where([
-                $this->softDeleteField . ' IS NOT NULL',
-                $this->softDeleteField . ' <=' => $until->format('Y-m-d H:i:s')
+                $this->getField() . ' IS NOT NULL',
+                $this->getField() . ' <=' => $until->format('Y-m-d H:i:s')
             ]);
         $statement = $query->execute();
         $statement->closeCursor();
