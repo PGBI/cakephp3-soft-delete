@@ -5,7 +5,12 @@ use Cake\ORM\RulesChecker;
 use Cake\Datasource\EntityInterface;
 
 trait SoftDeleteTrait {
-
+    
+    /**
+     * The name of the deleted field in the database.
+     * 
+     * @param string $softDeleteField The database column name for storing the deleted datetime.
+     */
     public $softDeleteField = 'deleted';
 
     /**
