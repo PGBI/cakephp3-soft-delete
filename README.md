@@ -42,7 +42,20 @@ class UsersTable extends Table
     ...
 ```
 
-3. Your soft deletable model database table should have a field called `deleted` of type DateTime with NULL as default value.
+3. Your soft deletable model database table should have a field called `deleted` of type DateTime with NULL as default value. If you want to customise this field you can declare the field in your Table class.
+
+```php
+// in src/Model/Table/UsersTable.php
+...
+use SoftDelete\Model\Table\SoftDeleteTrait;
+
+class UsersTable extends Table
+{
+    use SoftDeleteTrait;
+    
+    public $softDeleteField = 'deleted_date';
+    ...
+```
 
 ## Use
 
