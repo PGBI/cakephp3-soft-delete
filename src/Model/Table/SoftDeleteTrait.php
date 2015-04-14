@@ -7,6 +7,20 @@ use Cake\Datasource\EntityInterface;
 trait SoftDeleteTrait {
 
     /**
+     * Get the configured deletion field
+     *
+     * @return string
+     */
+    protected function getField()
+    {
+        if (isset($this->softDeleteField)) {
+            return $this->softDeleteField;
+        }
+
+        return 'deleted';
+    }
+
+    /**
      * Add the conditions `deleted IS NULL` to every find request in order not to return
      * soft deleted records.
      * To also find soft deleted records, `$options` shall contains `'withDeleted'`.
@@ -23,7 +37,7 @@ trait SoftDeleteTrait {
             $options['conditions'] = [];
         }
 
-        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.deleted IS NULL']);
+        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->getField() . ' IS NULL']);
 
         return parent::find($type, $options);
     }
@@ -73,7 +87,7 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set(['deleted' => date('Y-m-d H:i:s')])
+            ->set([$this->getField() => date('Y-m-d H:i:s')])
             ->where($conditions)
             ->execute();
 
@@ -98,7 +112,7 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->update()
-            ->set(['deleted' => date('Y-m-d H:i:s')])
+            ->set([$this->getField() => date('Y-m-d H:i:s')])
             ->where($conditions);
         $statement = $query->execute();
         $statement->closeCursor();
@@ -139,8 +153,8 @@ trait SoftDeleteTrait {
         $query = $this->query()
             ->delete()
             ->where([
-                'deleted IS NOT NULL',
-                'deleted <=' => $until->format('Y-m-d H:i:s')
+                $this->getField() . ' IS NOT NULL',
+                $this->getField() . ' <=' => $until->format('Y-m-d H:i:s')
             ]);
         $statement = $query->execute();
         $statement->closeCursor();
