@@ -52,8 +52,8 @@ use SoftDelete\Model\Table\SoftDeleteTrait;
 class UsersTable extends Table
 {
     use SoftDeleteTrait;
-    
-    public $softDeleteField = 'deleted_date';
+
+    protected $softDeleteField = 'deleted_date';
     ...
 ```
 

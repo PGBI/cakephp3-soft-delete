@@ -11,7 +11,7 @@ class TagsTable extends Table
 {
     use SoftDeleteTrait;
 
-    public $softDeleteField = 'deleted_date';
+    protected $softDeleteField = 'deleted_date';
 }
 
 
@@ -25,7 +25,7 @@ class TagsFixture extends TestFixture {
             'primary' => ['type' => 'primary', 'columns' => ['id']]
         ]
     ];
-    
+
     public $records = [
         [
             'id' => 1,

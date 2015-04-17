@@ -11,7 +11,7 @@ trait SoftDeleteTrait {
      *
      * @return string
      */
-    protected function getField()
+    protected function getSoftDeleteField()
     {
         if (isset($this->softDeleteField)) {
             return $this->softDeleteField;
@@ -37,7 +37,7 @@ trait SoftDeleteTrait {
             $options['conditions'] = [];
         }
 
-        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->getField() . ' IS NULL']);
+        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->getSoftDeleteField() . ' IS NULL']);
 
         return parent::find($type, $options);
     }
@@ -87,7 +87,7 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set([$this->getField() => date('Y-m-d H:i:s')])
+            ->set([$this->getSoftDeleteField() => date('Y-m-d H:i:s')])
             ->where($conditions)
             ->execute();
 
@@ -112,7 +112,7 @@ trait SoftDeleteTrait {
     {
         $query = $this->query()
             ->update()
-            ->set([$this->getField() => date('Y-m-d H:i:s')])
+            ->set([$this->getSoftDeleteField() => date('Y-m-d H:i:s')])
             ->where($conditions);
         $statement = $query->execute();
         $statement->closeCursor();
@@ -153,8 +153,8 @@ trait SoftDeleteTrait {
         $query = $this->query()
             ->delete()
             ->where([
-                $this->getField() . ' IS NOT NULL',
-                $this->getField() . ' <=' => $until->format('Y-m-d H:i:s')
+                $this->getSoftDeleteField() . ' IS NOT NULL',
+                $this->getSoftDeleteField() . ' <=' => $until->format('Y-m-d H:i:s')
             ]);
         $statement = $query->execute();
         $statement->closeCursor();
