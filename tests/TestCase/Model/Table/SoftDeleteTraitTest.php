@@ -75,6 +75,15 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->assertEquals(null, $user);
     }
 
+    public function testFindWithOrWhere()
+    {
+        $user = $this->usersTable->get(2);
+        $this->usersTable->delete($user);
+
+        $query = $this->usersTable->find()->where(['id' => 1])->orWhere(['id' => 2]);
+        $this->assertEquals(1, $query->count());
+    }
+
     /**
      * Tests that Table::deleteAll() does not hard delete
      */
@@ -162,41 +171,41 @@ class SoftDeleteBehaviorTest extends TestCase
         $newpostsRowsCount = $this->postsTable->find('all', ['withDeleted'])->count();
         $this->assertEquals($postsRowsCount - 1, $newpostsRowsCount);
     }
-    
+
     /**
      * Using a table with a custom soft delete field, ensure we can still filter
      * the found results properly.
-     * 
+     *
      * @return void
      */
     public function testFindingWithCustomField()
     {
         $query = $this->tagsTable->find();
         $this->assertEquals(1, $query->count());
-        
+
         $query = $this->tagsTable->find('all', ['withDeleted' => true]);
         $this->assertEquals(3, $query->count());
     }
-    
+
     /**
      * Ensure that when deleting a record which has a custom field defined in
      * the table, that it is still soft deleted.
-     * 
+     *
      * @return void
      */
     public function testDeleteWithCustomField()
     {
         $tag = $this->tagsTable->get(1);
         $this->tagsTable->delete($tag);
-        
+
         $query = $this->tagsTable->find();
         $this->assertEquals(0, $query->count());
     }
-    
+
     /**
-     * With a custom soft delete field ensure that a soft deleted record can 
+     * With a custom soft delete field ensure that a soft deleted record can
      * still be permanently removed.
-     * 
+     *
      * @return void
      */
     public function testHardDeleteWithCustomField()
@@ -204,13 +213,13 @@ class SoftDeleteBehaviorTest extends TestCase
         $tag = $this->tagsTable->find('all', ['withDeleted'])
             ->where(['id' => 2])
             ->first();
-        
+
         $this->tagsTable->hardDelete($tag);
-        
+
         $tag = $this->tagsTable->find('all', ['withDeleted'])
             ->where(['id' => 2])
             ->first();
-        
+
         $this->assertEquals(null, $tag);
     }
 }
