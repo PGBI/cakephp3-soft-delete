@@ -3,6 +3,7 @@ namespace SoftDelete\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\Datasource\EntityInterface;
+use SoftDelete\ORM\Query;
 
 trait SoftDeleteTrait {
 
@@ -11,7 +12,7 @@ trait SoftDeleteTrait {
      *
      * @return string
      */
-    protected function getSoftDeleteField()
+    public function getSoftDeleteField()
     {
         if (isset($this->softDeleteField)) {
             return $this->softDeleteField;
@@ -20,26 +21,9 @@ trait SoftDeleteTrait {
         return 'deleted';
     }
 
-    /**
-     * Add the conditions `deleted IS NULL` to every find request in order not to return
-     * soft deleted records.
-     * To also find soft deleted records, `$options` shall contains `'withDeleted'`.
-     *
-     * @return \Cake\ORM\Query
-     */
-    public function find($type = 'all', $options = [])
+    public function query()
     {
-        if(in_array('withDeleted', $options)) {
-            return parent::find($type, $options);
-        }
-
-        if(!isset($options['conditions'])) {
-            $options['conditions'] = [];
-        }
-
-        $options['conditions'] = array_merge($options['conditions'], [$this->alias() . '.' . $this->getSoftDeleteField() . ' IS NULL']);
-
-        return parent::find($type, $options);
+        return new Query($this->connection(), $this);
     }
 
     /**
