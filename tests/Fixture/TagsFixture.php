@@ -12,6 +12,17 @@ class TagsTable extends Table
     use SoftDeleteTrait;
 
     protected $softDeleteField = 'deleted_date';
+
+    public function initialize(array $config)
+    {
+        $this->belongsToMany('Posts', [
+            'through' => 'PostsTags',
+            'joinTable' => 'posts_tags',
+            'foreignKey' => 'tag_id',
+            'targetForeignKey' => 'post_id'
+        ]);
+        $this->hasMany('PostsTags');
+    }
 }
 
 
@@ -19,7 +30,7 @@ class TagsFixture extends TestFixture {
 
     public $fields = [
         'id'          => ['type' => 'integer'],
-        'name'     => ['type' => 'integer', 'default' => '0', 'null' => false],
+        'name'     => ['type' => 'string'],
         'deleted_date'     => ['type' => 'datetime', 'default' => null, 'null' => true],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id']]
@@ -35,7 +46,7 @@ class TagsFixture extends TestFixture {
         [
             'id' => 2,
             'name' => 'Dog',
-            'deleted_date' => '2015-04-15 09:46:00',
+            'deleted_date' => null,
         ],
         [
             'id' => 3,

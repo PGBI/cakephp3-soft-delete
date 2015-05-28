@@ -7,19 +7,20 @@ use Cake\TestSuite\Fixture\TestFixture;
 
 use SoftDelete\Model\Table\SoftDeleteTrait;
 
-class BlogPostsTable extends Table
+class PostsTable extends Table
 {
     use SoftDeleteTrait;
 
     public function initialize(array $config)
     {
         $this->belongsTo('Users');
+        $this->belongsToMany('Tags');
         $this->addBehavior('CounterCache', ['Users' => ['posts_count']]);
     }
 }
 
 
-class BlogPostsFixture extends TestFixture {
+class PostsFixture extends TestFixture {
 
     public $fields = [
         'id'          => ['type' => 'integer'],

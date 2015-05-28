@@ -18,8 +18,9 @@ class SoftDeleteBehaviorTest extends TestCase
      */
     public $fixtures = [
         'plugin.SoftDelete.users',
-        'plugin.SoftDelete.blog_posts',
-        'plugin.SoftDelete.tags'
+        'plugin.SoftDelete.posts',
+        'plugin.SoftDelete.tags',
+        'plugin.SoftDelete.posts_tags'
     ];
 
     /**
@@ -32,8 +33,9 @@ class SoftDeleteBehaviorTest extends TestCase
         parent::setUp();
 
         $this->usersTable = TableRegistry::get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
-        $this->postsTable = TableRegistry::get('BlogPosts', ['className' => 'SoftDelete\Test\Fixture\BlogPostsTable']);
+        $this->postsTable = TableRegistry::get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
         $this->tagsTable = TableRegistry::get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
+        $this->postsTagsTable = TableRegistry::get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
     }
 
     /**
@@ -45,6 +47,7 @@ class SoftDeleteBehaviorTest extends TestCase
     {
         unset($this->usersTable);
         unset($this->postsTable);
+        unset($this->tagsTable);
         parent::tearDown();
     }
 
@@ -85,6 +88,16 @@ class SoftDeleteBehaviorTest extends TestCase
     }
 
     /**
+     * Tests that soft deleted records in join table are taken into account when retrieving
+     * an entity with a belongsToManyAssociation.
+     */
+    public function testFindBelongsToMany()
+    {
+        $post = $this->postsTable->findById(1)->contain('Tags')->first();
+        $this->assertEquals(1, count($post->tags));
+    }
+
+    /**
      * Tests that Table::deleteAll() does not hard delete
      */
     public function testDeleteAll()
@@ -96,7 +109,6 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->postsTable->deleteAll([]);
         $this->assertEquals(0, $this->postsTable->find()->count());
         $this->assertNotEquals(0, $this->postsTable->find('all', ['withDeleted'])->count());
-
     }
 
     /**
@@ -181,7 +193,7 @@ class SoftDeleteBehaviorTest extends TestCase
     public function testFindingWithCustomField()
     {
         $query = $this->tagsTable->find();
-        $this->assertEquals(1, $query->count());
+        $this->assertEquals(2, $query->count());
 
         $query = $this->tagsTable->find('all', ['withDeleted' => true]);
         $this->assertEquals(3, $query->count());
@@ -199,7 +211,7 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->tagsTable->delete($tag);
 
         $query = $this->tagsTable->find();
-        $this->assertEquals(0, $query->count());
+        $this->assertEquals(1, $query->count());
     }
 
     /**

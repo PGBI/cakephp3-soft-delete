@@ -13,10 +13,10 @@ class UsersTable extends Table
 
     public function initialize(array $config)
     {
-        $this->hasMany('BlogPosts', [
+        $this->hasMany('Posts', [
             'dependent'        => true,
             'cascadeCallbacks' => true,
-            ]);
+        ]);
     }
 }
 
