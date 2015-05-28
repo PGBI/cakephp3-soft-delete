@@ -98,6 +98,31 @@ class SoftDeleteBehaviorTest extends TestCase
     }
 
     /**
+     * Test that entities matching a soft deleted associated record are not returned when using $query->matching().
+     */
+    public function testFindMatching()
+    {
+        $users = $this->usersTable->find()
+            ->matching('Posts', function($q) {
+                return $q->where(['Posts.id' => 1]);
+            });
+        $this->assertEquals(1, $users->count());
+
+        $post = $this->postsTable->get(1);
+        $this->postsTable->delete($post);
+
+        $posts = $this->postsTable->find('all', ['withDeleted'])->where(['id' => 1]);
+        $this->assertEquals(1, $posts->count());
+
+        $users = $this->usersTable->find()
+            ->matching('Posts', function($q) {
+                return $q->where(['Posts.id' => 1]);
+            });
+        $this->assertEquals(0, $users->count());
+    }
+
+
+    /**
      * Tests that Table::deleteAll() does not hard delete
      */
     public function testDeleteAll()
