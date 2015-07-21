@@ -17,22 +17,21 @@ trait SoftDeleteTrait {
     public function getSoftDeleteField()
     {
         if (isset($this->softDeleteField)) {
-            if ($this->schema()->column($this->softDeleteField) === null) {
-                throw new MissingColumnException(
-                    __('Configured field `%s` is missing from the table `%s`.',
-                        $this->getSoftDeleteField,
-                        $this->alias()
-                    )
-                );
-            }
-            return $this->softDeleteField;
+            $field = $this->softDeleteField;
+        } else {
+            $field = 'deleted';
         }
 
-        if ($this->schema()->column('deleted') === null) {
-            throw new MissingColumnException(__('Configured field `deleted` is missing from the table `%s`.', $this->alias()));
+        if ($this->schema()->column($field) === null) {
+            throw new MissingColumnException(
+                __('Configured field `{0}` is missing from the table `{1}`.',
+                    $field,
+                    $this->alias()
+                )
+            );
         }
 
-        return 'deleted';
+        return $field;
     }
 
     public function query()
