@@ -3,7 +3,6 @@ namespace SoftDelete\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
 use Cake\ORM\TableRegistry;
-use Cake\Network\Exception\InternalErrorException;
 
 /**
  * App\Model\Behavior\SoftDeleteBehavior Test Case
@@ -258,5 +257,17 @@ class SoftDeleteBehaviorTest extends TestCase
             ->first();
 
         $this->assertEquals(null, $tag);
+    }
+
+    /**
+     * When a configured field is missing from the table, an exception should be thrown
+     *
+     * @expectedException \SoftDelete\Error\MissingColumnException
+     */
+    public function testMissingColumn()
+    {
+        $this->postsTable->softDeleteField = 'foo';
+        $post = $this->postsTable->get(1);
+        $this->postsTable->delete($post);
     }
 }
