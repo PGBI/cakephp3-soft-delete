@@ -3,6 +3,7 @@ namespace SoftDelete\Model\Table;
 
 use Cake\ORM\RulesChecker;
 use Cake\Datasource\EntityInterface;
+use SoftDelete\Error\MissingColumnException;
 use SoftDelete\ORM\Query;
 
 trait SoftDeleteTrait {
@@ -11,11 +12,24 @@ trait SoftDeleteTrait {
      * Get the configured deletion field
      *
      * @return string
+     * @throws \SoftDelete\Error\MissingFieldException
      */
     public function getSoftDeleteField()
     {
         if (isset($this->softDeleteField)) {
+            if ($this->schema()->column($this->softDeleteField) === null) {
+                throw new MissingColumnException(
+                    __('Configured field `%s` is missing from the table `%s`.',
+                        $this->getSoftDeleteField,
+                        $this->alias()
+                    )
+                );
+            }
             return $this->softDeleteField;
+        }
+
+        if ($this->schema()->column('deleted') === null) {
+            throw new MissingColumnException(__('Configured field `deleted` is missing from the table `%s`.', $this->alias()));
         }
 
         return 'deleted';
