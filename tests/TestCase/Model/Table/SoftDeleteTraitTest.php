@@ -9,6 +9,10 @@ use Cake\ORM\TableRegistry;
  */
 class SoftDeleteBehaviorTest extends TestCase
 {
+    private $usersTable;
+    private $postsTable;
+    private $tagsTable;
+    private $postsTagsTable;
 
     /**
      * fixtures
@@ -257,6 +261,24 @@ class SoftDeleteBehaviorTest extends TestCase
             ->first();
 
         $this->assertEquals(null, $tag);
+    }
+
+    /**
+     * Test soft deleting and restoring a record.
+     * @return void
+     */
+    public function testRestore()
+    {
+        $user = $this->usersTable->findById(1)->first();
+        $this->assertNotNull($user);
+        $this->usersTable->delete($user);
+        $user = $this->usersTable->findById(1)->first();
+        $this->assertNull($user);
+
+        $user = $this->usersTable->find('all', ['withDeleted'])->where(['id' => 1])->first();
+        $this->usersTable->restore($user);
+        $user = $this->usersTable->findById(1)->first();
+        $this->assertNotNull($user);
     }
 
     /**

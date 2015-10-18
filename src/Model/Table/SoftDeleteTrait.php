@@ -158,4 +158,15 @@ trait SoftDeleteTrait {
         return $statement->rowCount();
     }
 
+    /**
+     * Restore a soft deleted entity into an active state.
+     * @param EntityInterface $entity Entity to be restored.
+     * @return bool true in case of success, false otherwise.
+     */
+    public function restore(EntityInterface $entity)
+    {
+        $softDeleteField = $this->getSoftDeleteField();
+        $entity->$softDeleteField = null;
+        return $this->save($entity);
+    }
 }
