@@ -115,3 +115,15 @@ Associations are correctly handled by SoftDelete plugin.
 
 1. Soft deletion will be cascaded to related models as usual. If related models also use SoftDelete Trait, they will be soft deleted.
 2. Soft deletes records will be excluded from counter caches.
+
+### set `dependent => false`
+```php
+$this->belongsToMany('Companies', [
+            'foreignKey' => 'users_id',
+            'targetForeignKey' => 'companies_id',
+            'joinTable' => 'users_companies',
+            'className' => 'Companies',
+            'dependent' => false,
+        ]);
+
+```
