@@ -69,7 +69,17 @@ class UsersTable extends Table
 // in src/Model/Table/UsersTable.php
 $this->delete($user); // $user entity is now soft deleted if UsersTable uses SoftDeleteTrait.
 ```
+### To avoid losing the `belongsToMany` set `dependent => false`
+```php
+$this->belongsToMany('Companies', [
+            'foreignKey' => 'users_id',
+            'targetForeignKey' => 'companies_id',
+            'joinTable' => 'users_companies',
+            'className' => 'Companies',
+            'dependent' => false,
+        ]);
 
+```
 ### Restoring Soft deleted records
 
 To restore a soft deleted entity into an active state, use the `restore` method:
