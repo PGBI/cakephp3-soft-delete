@@ -26,6 +26,7 @@ class UsersFixture extends TestFixture {
         'id'          => ['type' => 'integer'],
         'posts_count'  => ['type' => 'integer', 'default' => '0', 'null' => false],
         'deleted'     => ['type' => 'datetime', 'default' => null, 'null' => true],
+        'message_delete' => ['type' => 'string'],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id']]
         ]

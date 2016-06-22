@@ -6,7 +6,8 @@ use Cake\Datasource\EntityInterface;
 use SoftDelete\Error\MissingColumnException;
 use SoftDelete\ORM\Query;
 
-trait SoftDeleteTrait {
+trait SoftDeleteTrait
+{
 
     /**
      * Get the configured deletion field
@@ -32,6 +33,46 @@ trait SoftDeleteTrait {
         }
 
         return $field;
+    }
+
+    /**
+     * Get the configured deletion field
+     *
+     * @return string
+     * @throws \SoftDelete\Error\MissingFieldException
+     */
+    public function getSoftDeleteFieldMessage()
+    {
+        if (isset($this->softDeleteFieldMessage)) {
+            $field = $this->softDeleteFieldMessage;
+        } else {
+            $field = 'message_delete';
+        }
+
+        if ($this->schema()->column($field) === null) {
+            throw new MissingColumnException(
+                __('Configured field `{0}` is missing from the table `{1}`.',
+                    $field,
+                    $this->alias()
+                )
+            );
+        }
+
+        return $field;
+    }
+
+    /**
+     * Get the configured deletion field
+     *
+     * @return string
+     * @throws \SoftDelete\Error\MissingFieldException
+     */
+    public function getSoftDeleteMessage()
+    {
+        if (isset($this->softDeleteMessage)) {
+            return $this->softDeleteMessage;
+        }
+        return __('Configured field `{0}` is missing from the table `{1}`.');
     }
 
     public function query()
@@ -84,7 +125,10 @@ trait SoftDeleteTrait {
         $query = $this->query();
         $conditions = (array)$entity->extract($primaryKey);
         $statement = $query->update()
-            ->set([$this->getSoftDeleteField() => date('Y-m-d H:i:s')])
+            ->set([
+                $this->getSoftDeleteField() => date('Y-m-d H:i:s'),
+                $this->getSoftDeleteFieldMessage() => $this->getSoftDeleteMessage(),
+            ])
             ->where($conditions)
             ->execute();
 
@@ -122,7 +166,7 @@ trait SoftDeleteTrait {
      */
     public function hardDelete(EntityInterface $entity)
     {
-        if(!$this->delete($entity)) {
+        if (!$this->delete($entity)) {
             return false;
         }
         $primaryKey = (array)$this->primaryKey();
@@ -142,7 +186,7 @@ trait SoftDeleteTrait {
 
     /**
      * Hard deletes all records that were soft deleted before a given date.
-     * @param \DateTime $until Date until which soft deleted records must be hard deleted.
+     * @param \DateTime $until Date until witch soft deleted records must be hard deleted.
      * @return int number of affected rows.
      */
     public function hardDeleteAll(\Datetime $until)

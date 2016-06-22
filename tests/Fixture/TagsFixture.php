@@ -12,6 +12,8 @@ class TagsTable extends Table
     use SoftDeleteTrait;
 
     protected $softDeleteField = 'deleted_date';
+    protected $softDeleteFieldMessage = 'message_delete';
+    protected $softDeleteMessage = 'registration errors';
 
     public function initialize(array $config)
     {
@@ -26,12 +28,14 @@ class TagsTable extends Table
 }
 
 
-class TagsFixture extends TestFixture {
+class TagsFixture extends TestFixture
+{
 
     public $fields = [
-        'id'          => ['type' => 'integer'],
-        'name'     => ['type' => 'string'],
-        'deleted_date'     => ['type' => 'datetime', 'default' => null, 'null' => true],
+        'id' => ['type' => 'integer'],
+        'name' => ['type' => 'string'],
+        'deleted_date' => ['type' => 'datetime', 'default' => null, 'null' => true],
+        'message_delete' => ['type' => 'string'],
         '_constraints' => [
             'primary' => ['type' => 'primary', 'columns' => ['id']]
         ]

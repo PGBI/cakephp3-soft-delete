@@ -106,7 +106,7 @@ class SoftDeleteBehaviorTest extends TestCase
     public function testFindMatching()
     {
         $users = $this->usersTable->find()
-            ->matching('Posts', function($q) {
+            ->matching('Posts', function ($q) {
                 return $q->where(['Posts.id' => 1]);
             });
         $this->assertEquals(1, $users->count());
@@ -118,7 +118,7 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->assertEquals(1, $posts->count());
 
         $users = $this->usersTable->find()
-            ->matching('Posts', function($q) {
+            ->matching('Posts', function ($q) {
                 return $q->where(['Posts.id' => 1]);
             });
         $this->assertEquals(0, $users->count());
