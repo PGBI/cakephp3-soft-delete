@@ -72,7 +72,7 @@ trait SoftDeleteTrait
         if (isset($this->softDeleteMessage)) {
             return $this->softDeleteMessage;
         }
-        return __('Configured field `{0}` is missing from the table `{1}`.');
+        return __('Configured message is missing from the table.');
     }
 
     public function query()
