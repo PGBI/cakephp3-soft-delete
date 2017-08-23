@@ -66,6 +66,8 @@ class SoftDeleteBehaviorTest extends TestCase
         $user = $this->usersTable->find()->where(['id' => 1])->first();
         $this->assertEquals(null, $user);
 
+        $user = $this->usersTable->find('all', ['foo' => true])->where(['id' => 1])->first();
+        $this->assertEquals(null, $user);
     }
 
     /**
@@ -223,7 +225,7 @@ class SoftDeleteBehaviorTest extends TestCase
         $query = $this->tagsTable->find();
         $this->assertEquals(2, $query->count());
 
-        $query = $this->tagsTable->find('all', ['withDeleted' => true]);
+        $query = $this->tagsTable->find('all', ['withDeleted']);
         $this->assertEquals(3, $query->count());
     }
 
