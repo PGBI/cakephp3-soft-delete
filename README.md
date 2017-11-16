@@ -59,6 +59,23 @@ class UsersTable extends Table
     ...
 ```
 
+### Use a different date-format to show deleted
+
+If you wish to use a different format for the `deleted` fields date() setting, the following can be used:
+```php
+// in src/Model/Table/UsersTable.php
+...
+use SoftDelete\Model\Table\SoftDeleteTrait;
+
+class UsersTable extends Table
+{
+    use SoftDeleteTrait;
+
+    protected $softDeleteFormat = 'U';
+    ...
+```
+The above example will insert a unix-timestamp instead of the default `Y-m-d H:i:s`
+
 ## Use
 
 ### Soft deleting records
