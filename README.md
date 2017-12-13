@@ -17,14 +17,14 @@ You can install this plugin into your CakePHP application using [composer](http:
 
 Update your composer file to include this plugin:
 
-```
+```bash
 composer require pgbi/cakephp3-soft-delete "~1.0"
 ```
 
 ## Configuration
 
 ### Load the plugin:
-```
+```php
 // In /config/bootstrap.php
 Plugin::load('SoftDelete');
 ```
@@ -32,7 +32,7 @@ Plugin::load('SoftDelete');
 
 Use the SoftDelete trait on your model Table class:
 
-```
+```php
 // in src/Model/Table/UsersTable.php
 ...
 use SoftDelete\Model\Table\SoftDeleteTrait;
@@ -103,7 +103,7 @@ $success = $this->hardDelete($user);
 
 To mass hard delete records that were soft deleted before a given date, you can use hardDeleteAll($date):
 
-```
+```php
 // in src/Model/Table/UsersTable.php
 $date = new \DateTime('some date');
 $affectedRowsCount = $this->hardDeleteAll($date);
