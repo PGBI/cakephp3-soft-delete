@@ -1,4 +1,5 @@
 <?php
+
 namespace SoftDelete\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
@@ -9,6 +10,7 @@ use Cake\ORM\TableRegistry;
  */
 class SoftDeleteBehaviorTest extends TestCase
 {
+
     private $usersTable;
     private $postsTable;
     private $tagsTable;
@@ -65,7 +67,6 @@ class SoftDeleteBehaviorTest extends TestCase
 
         $user = $this->usersTable->find()->where(['id' => 1])->first();
         $this->assertEquals(null, $user);
-
     }
 
     /**
@@ -86,7 +87,10 @@ class SoftDeleteBehaviorTest extends TestCase
         $user = $this->usersTable->get(2);
         $this->usersTable->delete($user);
 
-        $query = $this->usersTable->find()->where(['id' => 1])->orWhere(['id' => 2]);
+        $query = $this->usersTable->find()->where(function($exp){
+            return $exp->in('id', [1, 2]);
+        });
+
         $this->assertEquals(1, $query->count());
     }
 
@@ -106,9 +110,9 @@ class SoftDeleteBehaviorTest extends TestCase
     public function testFindMatching()
     {
         $users = $this->usersTable->find()
-            ->matching('Posts', function($q) {
-                return $q->where(['Posts.id' => 1]);
-            });
+                ->matching('Posts', function($q) {
+            return $q->where(['Posts.id' => 1]);
+        });
         $this->assertEquals(1, $users->count());
 
         $post = $this->postsTable->get(1);
@@ -118,12 +122,11 @@ class SoftDeleteBehaviorTest extends TestCase
         $this->assertEquals(1, $posts->count());
 
         $users = $this->usersTable->find()
-            ->matching('Posts', function($q) {
-                return $q->where(['Posts.id' => 1]);
-            });
+                ->matching('Posts', function($q) {
+            return $q->where(['Posts.id' => 1]);
+        });
         $this->assertEquals(0, $users->count());
     }
-
 
     /**
      * Tests that Table::deleteAll() does not hard delete
@@ -251,14 +254,14 @@ class SoftDeleteBehaviorTest extends TestCase
     public function testHardDeleteWithCustomField()
     {
         $tag = $this->tagsTable->find('all', ['withDeleted'])
-            ->where(['id' => 2])
-            ->first();
+                ->where(['id' => 2])
+                ->first();
 
         $this->tagsTable->hardDelete($tag);
 
         $tag = $this->tagsTable->find('all', ['withDeleted'])
-            ->where(['id' => 2])
-            ->first();
+                ->where(['id' => 2])
+                ->first();
 
         $this->assertEquals(null, $tag);
     }

@@ -52,7 +52,7 @@ Configure::write('Session', [
     'defaults' => 'php'
 ]);
 
-Cache::config([
+Cache::setConfig([
     '_cake_core_' => [
         'engine' => 'File',
         'prefix' => 'cake_core_',
@@ -76,7 +76,7 @@ if (!getenv('db_class')) {
     putenv('db_dsn=sqlite::memory:');
 }
 
-ConnectionManager::config('test', [
+ConnectionManager::setConfig('test', [
     'className' => 'Cake\Database\Connection',
     'driver' => getenv('db_class'),
     'dsn' => getenv('db_dsn'),
@@ -86,7 +86,7 @@ ConnectionManager::config('test', [
     'timezone' => 'UTC'
 ]);
 
-Log::config([
+Log::setConfig([
     'debug' => [
         'engine' => 'Cake\Log\Engine\FileLog',
         'levels' => ['notice', 'info', 'debug'],
