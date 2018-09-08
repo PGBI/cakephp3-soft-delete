@@ -22,7 +22,7 @@ trait SoftDeleteTrait {
             $field = 'deleted';
         }
 
-        if ($this->schema()->column($field) === null) {
+        if ($this->getSchema()->getColumn($field) === null) {
             throw new MissingColumnException(
                 __('Configured field `{0}` is missing from the table `{1}`.',
                     $field,
@@ -36,7 +36,7 @@ trait SoftDeleteTrait {
 
     public function query()
     {
-        return new Query($this->connection(), $this);
+        return new Query($this->getConnection(), $this);
     }
 
     /**

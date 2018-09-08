@@ -35,10 +35,10 @@ class SoftDeleteBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->usersTable = TableRegistry::get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
-        $this->postsTable = TableRegistry::get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
-        $this->tagsTable = TableRegistry::get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
-        $this->postsTagsTable = TableRegistry::get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
+        $this->usersTable = TableRegistry::getTableLocator()->get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
+        $this->postsTable = TableRegistry::getTableLocator()->get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
+        $this->tagsTable = TableRegistry::getTableLocator()->get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
+        $this->postsTagsTable = TableRegistry::getTableLocator()->get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
     }
 
     /**
