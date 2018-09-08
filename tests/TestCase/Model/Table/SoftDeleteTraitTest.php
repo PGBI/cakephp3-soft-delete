@@ -35,10 +35,10 @@ class SoftDeleteBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->usersTable = TableRegistry::get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
-        $this->postsTable = TableRegistry::get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
-        $this->tagsTable = TableRegistry::get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
-        $this->postsTagsTable = TableRegistry::get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
+        $this->usersTable = TableRegistry::getTableLocator()->get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
+        $this->postsTable = TableRegistry::getTableLocator()->get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
+        $this->tagsTable = TableRegistry::getTableLocator()->get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
+        $this->postsTagsTable = TableRegistry::getTableLocator()->get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
     }
 
     /**
@@ -86,7 +86,7 @@ class SoftDeleteBehaviorTest extends TestCase
         $user = $this->usersTable->get(2);
         $this->usersTable->delete($user);
 
-        $query = $this->usersTable->find()->where(['id' => 1])->orWhere(['id' => 2]);
+        $query = $this->usersTable->find()->where(['OR' => [['id' => 1], ['id' => 2]]]);
         $this->assertEquals(1, $query->count());
     }
 
