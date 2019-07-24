@@ -1,12 +1,12 @@
 {
-    "name": "pgbi/cakephp3-soft-delete",
+    "name": "tomohiroukawa/cakephp3-soft-delete",
     "description": "SoftDelete plugin for CakePHP",
     "keywords": ["cakephp", "cakephp 3", "plugin", "soft", "delete", "deletable"],
-    "homepage": "https://github.com/pgbi/cakephp3-soft-delete",
+    "homepage": "https://github.com/tomohiroukawa/cakephp3-soft-delete",
     "type": "cakephp-plugin",
     "license": "MIT",
     "support": {
-        "source": "https://github.com/pgbi/cakephp3-soft-delete"
+        "source": "https://github.com/tomohiroukawa/cakephp3-soft-delete"
     },
     "require": {
         "php": ">=5.4",
