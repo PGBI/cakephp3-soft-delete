@@ -18,7 +18,7 @@ You can install this plugin into your CakePHP application using [composer](http:
 Update your composer file to include this plugin:
 
 ```
-composer require pgbi/cakephp3-soft-delete "~1.0"
+composer require fredckl/cakephp3-soft-delete "~2.0"
 ```
 
 ## Configuration
