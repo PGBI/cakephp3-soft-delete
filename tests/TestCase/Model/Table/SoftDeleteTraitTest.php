@@ -20,10 +20,10 @@ class SoftDeleteBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.SoftDelete.users',
-        'plugin.SoftDelete.posts',
-        'plugin.SoftDelete.tags',
-        'plugin.SoftDelete.posts_tags'
+        'plugin.SoftDelete.Users',
+        'plugin.SoftDelete.Posts',
+        'plugin.SoftDelete.Tags',
+        'plugin.SoftDelete.PostsTags'
     ];
 
     /**
@@ -86,7 +86,7 @@ class SoftDeleteBehaviorTest extends TestCase
         $user = $this->usersTable->get(2);
         $this->usersTable->delete($user);
 
-        $query = $this->usersTable->find()->where(['id' => 1])->orWhere(['id' => 2]);
+        $query = $this->usersTable->find()->where(['OR' => [['id' => 1], ['id' => 2]]]);
         $this->assertEquals(1, $query->count());
     }
 

@@ -1,6 +1,10 @@
 # CakeSoftDelete plugin for CakePHP
 
-[![Build status](https://api.travis-ci.org/PGBI/cakephp3-soft-delete.png?branch=master)](https://travis-ci.org/PGBI/cakephp3-soft-delete)
+[![Build status](https://api.travis-ci.org/fredckl/cakephp3-soft-delete.png?branch=master)](https://travis-ci.org/fredckl/cakephp3-soft-delete)
+
+------------
+> Original source from [PGBI](https://github.com/pgbi/cakephp3-soft-delete)
+------------
 
 ## Purpose
 
@@ -18,7 +22,7 @@ You can install this plugin into your CakePHP application using [composer](http:
 Update your composer file to include this plugin:
 
 ```
-composer require pgbi/cakephp3-soft-delete "~1.0"
+composer require fredckl/cakephp3-soft-delete "~2.0"
 ```
 
 ## Configuration
