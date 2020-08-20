@@ -77,8 +77,8 @@ To restore a soft deleted entity into an active state, use the `restore` method:
 ```php
 // in src/Model/Table/UsersTable.php
 // Let's suppose $user #1 is soft deleted.
-$user = $this->Users->find('all', ['withDeleted'])->where('id', 1)->first();
-$this->restore($user); // $user #1 is now restored.
+$user = $this->Users->find('all', ['withDeleted'])->where(['id', 1])->first();
+$this->Users->restore($user); // $user #1 is now restored.
 ```
 
 ### Finding records
