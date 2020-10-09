@@ -9,9 +9,9 @@
         "source": "https://github.com/imo-tikuwa/cakephp3-soft-delete"
     },
     "require": {
-        "php": ">=5.4",
+        "php": ">=7.2",
         "cakephp/plugin-installer": "*",
-        "cakephp/cakephp": ">=3.9"
+        "cakephp/cakephp": "~4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*"
