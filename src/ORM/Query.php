@@ -17,7 +17,7 @@ class Query extends CakeQuery
      *
      * @return void
      */
-    public function triggerBeforeFind()
+    public function triggerBeforeFind(): void
     {
         if (!$this->_beforeFindFired && $this->_type === 'select') {
             parent::triggerBeforeFind();

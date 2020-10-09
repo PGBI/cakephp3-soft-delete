@@ -34,7 +34,7 @@ trait SoftDeleteTrait {
         return $field;
     }
 
-    public function query()
+    public function query(): Query
     {
         return new Query($this->getConnection(), $this);
     }
@@ -51,7 +51,7 @@ trait SoftDeleteTrait {
      * passed entity
      * @return bool success
      */
-    protected function _processDelete($entity, $options)
+    protected function _processDelete($entity, $options): bool
     {
         if ($entity->isNew()) {
             return false;
@@ -105,7 +105,7 @@ trait SoftDeleteTrait {
      * Soft deletes all records matching `$conditions`.
      * @return int number of affected rows.
      */
-    public function deleteAll($conditions)
+    public function deleteAll($conditions): int
     {
         $query = $this->query()
             ->update()
