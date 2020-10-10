@@ -1,4 +1,4 @@
-# CakeSoftDelete plugin for CakePHP4
+# CakeSoftDelete plugin for CakePHP 3 and 4
 
 [![Build status](https://api.travis-ci.org/PGBI/cakephp3-soft-delete.png?branch=master)](https://travis-ci.org/PGBI/cakephp3-soft-delete)
 
@@ -18,7 +18,11 @@ You can install this plugin into your CakePHP application using [composer](http:
 Update your composer file to include this plugin:
 
 ```
+# for CakePHP4
 composer require imo-tikuwa/cakephp3-soft-delete "2.*"
+
+# for CakePHP3
+composer require imo-tikuwa/cakephp3-soft-delete "1.*"
 ```
 
 ## Configuration
