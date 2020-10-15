@@ -11,7 +11,11 @@ class UsersTable extends Table
 {
     use SoftDeleteTrait;
 
-    public function initialize(array $config)
+    /**
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config): void
     {
         $this->hasMany('Posts', [
             'dependent'        => true,
@@ -20,8 +24,8 @@ class UsersTable extends Table
     }
 }
 
-class UsersFixture extends TestFixture {
-
+class UsersFixture extends TestFixture
+{
     public $fields = [
         'id'          => ['type' => 'integer'],
         'posts_count'  => ['type' => 'integer', 'default' => '0', 'null' => false],

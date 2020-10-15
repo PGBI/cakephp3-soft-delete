@@ -6,8 +6,8 @@ use Cake\Datasource\EntityInterface;
 use SoftDelete\Error\MissingColumnException;
 use SoftDelete\ORM\Query;
 
-trait SoftDeleteTrait {
-
+trait SoftDeleteTrait
+{
     /**
      * Get the configured deletion field
      *
@@ -24,7 +24,8 @@ trait SoftDeleteTrait {
 
         if ($this->getSchema()->getColumn($field) === null) {
             throw new MissingColumnException(
-                __('Configured field `{0}` is missing from the table `{1}`.',
+                __(
+                    'Configured field `{0}` is missing from the table `{1}`.',
                     $field,
                     $this->alias()
                 )
@@ -34,6 +35,10 @@ trait SoftDeleteTrait {
         return $field;
     }
 
+    /**
+     * Query override.
+     * @return \SoftDelete\ORM\Query
+     */
     public function query(): Query
     {
         return new Query($this->getConnection(), $this);
@@ -103,6 +108,7 @@ trait SoftDeleteTrait {
 
     /**
      * Soft deletes all records matching `$conditions`.
+     * @param array $conditions entities search conditions
      * @return int number of affected rows.
      */
     public function deleteAll($conditions): int
@@ -118,11 +124,12 @@ trait SoftDeleteTrait {
 
     /**
      * Hard deletes the given $entity.
+     * @param EntityInterface $entity entity
      * @return bool true in case of success, false otherwise.
      */
     public function hardDelete(EntityInterface $entity)
     {
-        if(!$this->delete($entity)) {
+        if (!$this->delete($entity)) {
             return false;
         }
         $primaryKey = (array)$this->getPrimaryKey();

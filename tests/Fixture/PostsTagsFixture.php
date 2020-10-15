@@ -11,7 +11,11 @@ class PostsTagsTable extends Table
 {
     use SoftDeleteTrait;
 
-    public function initialize(array $config)
+    /**
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config): void
     {
         $this->belongsTo('Tags');
         $this->belongsTo('Posts');
@@ -19,8 +23,8 @@ class PostsTagsTable extends Table
 }
 
 
-class PostsTagsFixture extends TestFixture {
-
+class PostsTagsFixture extends TestFixture
+{
     public $fields = [
         'id' => ['type' => 'integer'],
         'post_id' => ['type' => 'integer'],
@@ -46,5 +50,3 @@ class PostsTagsFixture extends TestFixture {
         ],
     ];
 }
-
-

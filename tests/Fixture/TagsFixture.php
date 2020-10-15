@@ -13,7 +13,11 @@ class TagsTable extends Table
 
     protected $softDeleteField = 'deleted_date';
 
-    public function initialize(array $config)
+    /**
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
+    public function initialize(array $config): void
     {
         $this->belongsToMany('Posts', [
             'through' => 'PostsTags',
@@ -26,8 +30,8 @@ class TagsTable extends Table
 }
 
 
-class TagsFixture extends TestFixture {
-
+class TagsFixture extends TestFixture
+{
     public $fields = [
         'id'          => ['type' => 'integer'],
         'name'     => ['type' => 'string'],
@@ -55,5 +59,3 @@ class TagsFixture extends TestFixture {
         ]
     ];
 }
-
-
