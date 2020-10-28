@@ -37,9 +37,13 @@ trait SoftDeleteTrait
 
     /**
      * Query override.
+     *
+     * Fatal error: Declaration of SoftDelete\Model\Table\SoftDeleteTrait::query(): SoftDelete\ORM\Query must be compatible with Cake\ORM\Table::query(): Cake\ORM\Query
+     * 上記エラー回避のため戻り値の型宣言では実体と異なるがCakePHP本体のquery()で定義されている上書き元の型（\Cake\ORM\Query）を明示する
+     *
      * @return \SoftDelete\ORM\Query
      */
-    public function query(): Query
+    public function query(): \Cake\ORM\Query
     {
         return new Query($this->getConnection(), $this);
     }
