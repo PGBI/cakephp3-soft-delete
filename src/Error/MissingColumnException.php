@@ -2,8 +2,8 @@
 
 namespace SoftDelete\Error;
 
-use Cake\Core\Exception\Exception;
+use Cake\Core\Exception\CakeException;
 
-class MissingColumnException extends Exception
+class MissingColumnException extends CakeException
 {
 }
