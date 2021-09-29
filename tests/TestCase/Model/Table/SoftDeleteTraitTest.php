@@ -2,12 +2,16 @@
 namespace SoftDelete\Test\TestCase\Model\Table;
 
 use Cake\TestSuite\TestCase;
-use Cake\ORM\TableRegistry;
 
 /**
  * App\Model\Behavior\SoftDeleteBehavior Test Case
+ *
+ * @property \SoftDelete\Test\Table\UsersTable $usersTable
+ * @property \SoftDelete\Test\Table\PostsTable $postsTable
+ * @property \SoftDelete\Test\Table\TagsTable $tagsTable
+ * @property \SoftDelete\Test\Table\PostsTagsTable $postsTagsTable
  */
-class SoftDeleteBehaviorTest extends TestCase
+class SoftDeleteTraitTest extends TestCase
 {
     private $usersTable;
     private $postsTable;
@@ -20,10 +24,10 @@ class SoftDeleteBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.SoftDelete.users',
-        'plugin.SoftDelete.posts',
-        'plugin.SoftDelete.tags',
-        'plugin.SoftDelete.posts_tags'
+        'plugin.SoftDelete.Users',
+        'plugin.SoftDelete.Posts',
+        'plugin.SoftDelete.Tags',
+        'plugin.SoftDelete.PostsTags'
     ];
 
     /**
@@ -35,10 +39,10 @@ class SoftDeleteBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->usersTable = TableRegistry::get('Users', ['className' => 'SoftDelete\Test\Fixture\UsersTable']);
-        $this->postsTable = TableRegistry::get('Posts', ['className' => 'SoftDelete\Test\Fixture\PostsTable']);
-        $this->tagsTable = TableRegistry::get('Tags', ['className' => 'SoftDelete\Test\Fixture\TagsTable']);
-        $this->postsTagsTable = TableRegistry::get('PostsTags', ['className' => 'SoftDelete\Test\Fixture\PostsTagsTable']);
+        $this->usersTable = $this->getTableLocator()->get('Users', ['className' => \SoftDelete\Test\Table\UsersTable::class]);
+        $this->postsTable = $this->getTableLocator()->get('Posts', ['className' => \SoftDelete\Test\Table\PostsTable::class]);
+        $this->tagsTable = $this->getTableLocator()->get('Tags', ['className' => \SoftDelete\Test\Table\TagsTable::class]);
+        $this->postsTagsTable = $this->getTableLocator()->get('PostsTags', ['className' => \SoftDelete\Test\Table\PostsTagsTable::class]);
     }
 
     /**
@@ -82,10 +86,19 @@ class SoftDeleteBehaviorTest extends TestCase
 
     public function testFindWithOrWhere()
     {
+        $conditions = [
+            'OR' => [
+                ['id' => 1],
+                ['id' => 2]
+            ]
+        ];
+        $query = $this->usersTable->find()->where($conditions);
+        $this->assertEquals(2, $query->count());
+
         $user = $this->usersTable->get(2);
         $this->usersTable->delete($user);
 
-        $query = $this->usersTable->find()->where(['id' => 1])->orWhere(['id' => 2]);
+        $query = $this->usersTable->find()->where($conditions);
         $this->assertEquals(1, $query->count());
     }
 
@@ -287,6 +300,7 @@ class SoftDeleteBehaviorTest extends TestCase
      */
     public function testMissingColumn()
     {
+        $this->expectException(\SoftDelete\Error\MissingColumnException::class);
         $this->postsTable->softDeleteField = 'foo';
         $post = $this->postsTable->get(1);
         $this->postsTable->delete($post);
