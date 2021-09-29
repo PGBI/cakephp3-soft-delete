@@ -2,11 +2,11 @@
     "name": "imo-tikuwa/cakephp-soft-delete",
     "description": "SoftDelete plugin for CakePHP",
     "keywords": ["cakephp", "cakephp 4", "plugin", "soft", "delete", "deletable"],
-    "homepage": "https://github.com/imo-tikuwa/cakephp3-soft-delete",
+    "homepage": "https://github.com/imo-tikuwa/cakephp-soft-delete",
     "type": "cakephp-plugin",
     "license": "MIT",
     "support": {
-        "source": "https://github.com/imo-tikuwa/cakephp3-soft-delete"
+        "source": "https://github.com/imo-tikuwa/cakephp-soft-delete"
     },
     "require": {
         "php": ">=7.2",
