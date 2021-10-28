@@ -296,7 +296,6 @@ class SoftDeleteTraitTest extends TestCase
     /**
      * When a configured field is missing from the table, an exception should be thrown
      *
-     * @expectedException \SoftDelete\Error\MissingColumnException
      */
     public function testMissingColumn()
     {
