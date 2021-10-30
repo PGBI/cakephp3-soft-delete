@@ -32,15 +32,6 @@ class TagsTable extends Table
 
 class TagsFixture extends TestFixture
 {
-    public $fields = [
-        'id'          => ['type' => 'integer'],
-        'name'     => ['type' => 'string'],
-        'deleted_date'     => ['type' => 'datetime', 'default' => null, 'null' => true],
-        '_constraints' => [
-            'primary' => ['type' => 'primary', 'columns' => ['id']]
-        ]
-    ];
-
     public $records = [
         [
             'id' => 1,
