@@ -33,6 +33,10 @@ require_once $root . '/vendor/autoload.php';
  */
 require_once $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
+$schema_path = dirname(__DIR__) . DS . 'config' . DS . 'schema' . DS . 'schema.sql';
+(new \Migrations\TestSuite\Migrator())->run();
+(new \Cake\TestSuite\Fixture\SchemaLoader())->loadSqlFiles($schema_path, 'test');
+
 if (file_exists($root . '/config/bootstrap.php')) {
     require $root . '/config/bootstrap.php';
 
