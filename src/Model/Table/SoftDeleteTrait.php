@@ -1,10 +1,10 @@
 <?php
 namespace SoftDelete\Model\Table;
 
+use Cake\ORM\Query\SelectQuery;
 use Cake\ORM\RulesChecker;
 use Cake\Datasource\EntityInterface;
 use SoftDelete\Error\MissingColumnException;
-use SoftDelete\ORM\Query;
 
 trait SoftDeleteTrait
 {
@@ -12,7 +12,7 @@ trait SoftDeleteTrait
      * Get the configured deletion field
      *
      * @return string
-     * @throws \SoftDelete\Error\MissingFieldException
+     * @throws \SoftDelete\Error\MissingColumnException
      */
     public function getSoftDeleteField()
     {
@@ -43,9 +43,9 @@ trait SoftDeleteTrait
      *
      * @return \SoftDelete\ORM\Query
      */
-    public function query(): \Cake\ORM\Query
+    public function SelectQuery(): SelectQuery
     {
-        return new Query($this->getConnection(), $this);
+        return new SelectQuery($this->getConnection(), $this);
     }
 
     /**

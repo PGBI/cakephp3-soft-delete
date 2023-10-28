@@ -1,12 +1,12 @@
 <?php
 namespace SoftDelete\ORM;
 
-use Cake\ORM\Query as CakeQuery;
+use Cake\ORM\Query\SelectQuery as CakeQuery;
 
 /**
  * Soft delete-aware query
  */
-class Query extends CakeQuery
+class SelectQuery extends CakeQuery
 {
     /**
      * Overwriting triggerBeforeFind() to let queries not return soft deleted records
